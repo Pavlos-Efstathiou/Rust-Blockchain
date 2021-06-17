@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "lldb",
+        "request": "launch",
+        "name": "Launch",
+        "args": [],
+        "dependsOn": "build",
+        "program": "${workspaceFolder}/target/debug/rs_blockchain.exe",
+        "windows": {
+          "program": "${workspaceFolder}/target/debug/rs_blockchain.exe"
+        },
+        "cwd": "${workspaceFolder}",
+        "stopOnEntry": false,
+        "sourceLanguages": [
+          "rust"
+        ]
+      }
+    ]
+  }
