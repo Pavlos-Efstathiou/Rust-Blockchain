@@ -1,7 +1,6 @@
+use crate::rust_blockchain::block::*;
+use crate::rust_blockchain::err::{EmptyVecErr, ErrResult};
 use std::env;
-
-use crate::rs_blockchain::block::*;
-use crate::rs_blockchain::err::EmptyVecErr;
 
 #[allow(dead_code)]
 pub struct Blockchain {
@@ -10,10 +9,9 @@ pub struct Blockchain {
     pub chain: Vec<Block>,
 }
 
-type ErrResult<T> = std::result::Result<T, EmptyVecErr>;
-
 #[allow(dead_code)]
 impl Blockchain {
+    /// Returns a new instance of the Blockchain Struct
     pub fn new() -> Self {
         Self {
             unconfirmed_transactions: vec![String::from("")],
@@ -29,16 +27,19 @@ impl Blockchain {
         start_zeros.is_match(&*(hash))
     }
 
+    /// Initializes a Blockchain by creating a genesis block
     pub fn init(&mut self) {
         let mut genesis_block = &mut self.chain[0];
         genesis_block.hash = genesis_block.compute_hash();
     }
 
+    /// Returns a clone of the last block in a chain
     pub fn last_block(&mut self) -> Block {
         let chain_length = self.chain.len();
         self.chain[chain_length - 1].clone()
     }
 
+    /// Proves that a block can be added to the chain
     pub fn proof_of_work(&self, block: &mut Block) -> String {
         let mut computed_hash = block.compute_hash();
         let mut string_start = self.starts_with_zeros(&computed_hash);
@@ -53,6 +54,7 @@ impl Blockchain {
         computed_hash
     }
 
+    /// Adds a block to the chain
     pub fn add_block(&mut self, block: &mut Block, proof: &str) -> bool {
         let previous_hash = self.last_block().hash;
 
@@ -69,10 +71,11 @@ impl Blockchain {
         true
     }
 
-    pub fn is_valid_proof(&self, block: &mut Block, block_hash: &str) -> bool {
+    fn is_valid_proof(&self, block: &mut Block, block_hash: &str) -> bool {
         self.starts_with_zeros(&block_hash) && block_hash == block.compute_hash()
     }
 
+    /// Adds a transaction to the chain
     pub fn add_transaction(&mut self, transaction: String) {
         println!(
             "Added transaction \"{}\" to unconfirmed transactions",
@@ -105,18 +108,28 @@ impl Blockchain {
         res
     }
 
-    pub fn mine(&mut self) {
+    /// Mines Blockchain
+    pub fn mine(&mut self) -> u32 {
         let mined_block = match self.res_mine() {
-            Ok(val) => println!("Mined a block with index {}", val.index),
+            Ok(val) => {
+                println!("Mined a block with index {}", val.index);
+                val.index
+            }
             Err(e) => {
                 eprintln!("Error: {}", e);
                 if env::consts::OS == "windows" {
                     std::process::exit(0x100);
                 } else {
                     std::process::exit(0x0);
-                }
+                };
             }
         };
         mined_block
+    }
+}
+
+impl Default for Blockchain {
+    fn default() -> Self {
+        Self::new()
     }
 }

@@ -1,6 +1,6 @@
 [package]
 name = "rs_blockchain"
-version = "0.1.1"
+version = "0.1.5"
 authors = ["Pavlos Efstathiou"]
 edition = "2018"
 license = "MIT"
@@ -10,6 +10,7 @@ repository = "https://github.com/Pavlos-Efstathiou/Rust-Blockchain/"
 exclude = [
     ".vscode/*"
 ]
+
 [dependencies]
 sha2 = "0.9.5"
 serde_json = "1.0.64"

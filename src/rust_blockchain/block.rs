@@ -6,8 +6,9 @@ use serde::{Deserialize, Serialize};
 use serde_json::Result;
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
+
 /// Block struct.
-/// Used in combination with other blocks and a the Blockchain class
+/// Used in a Blockchain with other blocks and the Blockchain class
 pub struct Block {
     pub index: u32,
     pub transactions: Vec<String>,
@@ -32,23 +33,19 @@ impl Block {
         }
     }
 
-    /// Private function.
-    /// Returns
     fn get_json_result(&self) -> Result<String> {
         let json_data = serde_json::to_string(&self)?;
         Ok(json_data)
     }
 
+    /// Return a Block struct's data in the JSON format
     pub fn get_json(&self) -> String {
         let result_json = self.get_json_result();
         result_json.as_ref().unwrap().to_string()
     }
 
+    /// Returns the SHA256 hash of a Block
     pub fn compute_hash(&mut self) -> String {
-        // if self.transactions[0].is_empty() {
-        //     self.transactions.remove(0);
-        // }
-
         let json = self.get_json();
         format!("{:x}", sha2::Sha256::digest(json.as_bytes()))
     }

@@ -1,6 +1,7 @@
 pub mod block;
 pub mod blockchain;
 pub mod err;
+
 use std::fmt;
 
 pub struct VersionInfo<'a> {
@@ -22,7 +23,7 @@ impl fmt::Display for VersionInfo<'_> {
 
 #[allow(dead_code)]
 pub const VERSION_INFO: VersionInfo = VersionInfo {
-    version: 0.10,
+    version: 0.1,
     version_name: "Fengari",
-    patch: 0,
+    patch: 5,
 };

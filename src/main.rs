@@ -1,23 +1,15 @@
 use std::env;
-mod rs_blockchain;
-use crate::rs_blockchain::blockchain::Blockchain;
+
+mod rust_blockchain;
+use rust_blockchain::blockchain::Blockchain;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let amount: u32;
-
     let mut test = Blockchain::new();
     test.init();
 
     if args.len() >= 2 {
-        let u32_vec: Vec<u32> = args[1].chars().filter_map(|i| i.to_digit(10)).collect();
-        amount = u32_vec
-            .iter()
-            .map(|x| x.to_string())
-            .collect::<String>()
-            .trim()
-            .parse()
-            .unwrap();
+        let amount: u32 = args[1].trim().parse().unwrap();
 
         for i in 1..=amount {
             test.add_transaction(format!("Transaction {}", i));

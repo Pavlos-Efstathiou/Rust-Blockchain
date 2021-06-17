@@ -1,1 +1,1 @@
-pub mod rs_blockchain;
+pub mod rust_blockchain;
