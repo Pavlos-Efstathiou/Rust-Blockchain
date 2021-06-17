@@ -1,6 +1,7 @@
 use std::env;
-mod blockchain_lib;
-use blockchain_lib::blockchain::Blockchain;
+mod rs_blockchain;
+use crate::rs_blockchain::blockchain::Blockchain;
+
 fn main() {
     let args: Vec<String> = env::args().collect();
     let amount: u32;

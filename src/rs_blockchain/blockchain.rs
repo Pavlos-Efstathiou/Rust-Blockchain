@@ -1,7 +1,7 @@
 use std::env;
 
-use crate::blockchain_lib::block::*;
-use crate::blockchain_lib::err::EmptyVecErr;
+use crate::rs_blockchain::block::*;
+use crate::rs_blockchain::err::EmptyVecErr;
 
 #[allow(dead_code)]
 pub struct Blockchain {

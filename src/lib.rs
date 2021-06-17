@@ -1,1 +1,1 @@
-mod blockchain_lib;
+pub mod rs_blockchain;
