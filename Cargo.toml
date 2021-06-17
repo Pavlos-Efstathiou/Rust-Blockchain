@@ -4,10 +4,12 @@ version = "0.1.0"
 authors = ["Pavlos Efstathiou"]
 edition = "2018"
 license = "MIT"
-license-file = "LICENSE"
 description = "Blockchain in Rust."
 readme = "README.MD"
-
+repository = "https://github.com/Pavlos-Efstathiou/Rust-Blockchain/" 
+exclude = [
+    ".vscode/*"
+]
 [dependencies]
 sha2 = "0.9.5"
 serde_json = "1.0.64"
