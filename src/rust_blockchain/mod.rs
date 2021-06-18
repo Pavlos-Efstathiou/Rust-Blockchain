@@ -25,5 +25,12 @@ impl fmt::Display for VersionInfo<'_> {
 pub const VERSION_INFO: VersionInfo = VersionInfo {
     version: 0.1,
     version_name: "Fengari",
-    patch: 5,
+    patch: 7,
 };
+
+pub fn remove_non_digits(string: &str) -> u32 {
+    let re = regex::Regex::new(r"(\D)+").unwrap();
+    let applied_regex = re.replace_all(string, "");
+
+    applied_regex.parse::<u32>().unwrap()
+}

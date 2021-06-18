@@ -1,10 +1,10 @@
 [package]
 name = "rs_blockchain"
-version = "0.1.5"
+version = "0.1.7"
 authors = ["Pavlos Efstathiou"]
 edition = "2018"
 license = "MIT"
-description = "Blockchain in Rust."
+description = "Blockchain in Rust"
 readme = "README.MD"
 repository = "https://github.com/Pavlos-Efstathiou/Rust-Blockchain/" 
 exclude = [
