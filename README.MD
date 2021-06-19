@@ -1,12 +1,12 @@
-# rs-blockchain
+## rs-blockchain
 
-### Blockchain crate for the Rust programming language.
+Blockchain crate for the Rust programming language.
 
-### It's API is still very unstable and should not be taken for granted. 
+It's API is still very unstable and should not be taken for granted. 
 
-# Can you show me how to use this crate?
+## Can you show me how to use this crate?
 
-### Here's an example
+Here's an example to get started
 ```rust
 use std::env;
 
@@ -34,6 +34,5 @@ fn main() {
 }
 ```
 
-# Can I contribute to this project?
-
-### Of course, anyone can!
+## Can I contribute to this project?
+Of course, anyone can!

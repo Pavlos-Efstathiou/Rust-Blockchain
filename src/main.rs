@@ -12,12 +12,12 @@ fn main() {
         let amount: u32 = remove_non_digits(&args[1]);
 
         for i in 1..=amount {
-            test.add_transaction(format!("Transaction {}", i));
+            test.add_transaction("Jane Doe", "John Doe", i as f32);
             test.mine();
         }
     } else {
         for i in 1..=25 {
-            test.add_transaction(format!("Transaction {}", i));
+            test.add_transaction("Jane Doe", "John Doe", i as f32);
             test.mine();
         }
     }

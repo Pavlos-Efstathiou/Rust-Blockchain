@@ -23,9 +23,9 @@ impl fmt::Display for VersionInfo<'_> {
 
 #[allow(dead_code)]
 pub const VERSION_INFO: VersionInfo = VersionInfo {
-    version: 0.1,
-    version_name: "Fengari",
-    patch: 7,
+    version: 0.2,
+    version_name: "Alma",
+    patch: 0,
 };
 
 pub fn remove_non_digits(string: &str) -> u32 {

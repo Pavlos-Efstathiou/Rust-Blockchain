@@ -1,10 +1,11 @@
 use crate::rust_blockchain::block::*;
 use crate::rust_blockchain::err::{EmptyVecErr, ErrResult};
+
 use std::env;
 
 #[allow(dead_code)]
 pub struct Blockchain {
-    pub unconfirmed_transactions: Vec<String>,
+    pub unconfirmed_transactions: Vec<Transaction>,
     pub difficulty: i32,
     pub chain: Vec<Block>,
 }
@@ -14,9 +15,13 @@ impl Blockchain {
     /// Returns a new instance of the Blockchain Struct
     pub fn new() -> Self {
         Self {
-            unconfirmed_transactions: vec![String::from("")],
+            unconfirmed_transactions: vec![],
             difficulty: 3,
-            chain: vec![Block::new(0, vec!["".to_string()], "".to_string())],
+            chain: vec![Block::new(
+                0,
+                vec![Transaction::new("".to_string(), "".to_string(), 0f32)],
+                "".to_string(),
+            )],
         }
     }
 
@@ -55,7 +60,7 @@ impl Blockchain {
     }
 
     /// Adds a block to the chain
-    pub fn add_block(&mut self, block: &mut Block, proof: &str) -> bool {
+    pub fn add_block(&mut self, block: &mut Block, proof: &str) {
         let previous_hash = self.last_block().hash;
 
         if previous_hash != block.previous_hash {
@@ -68,7 +73,6 @@ impl Blockchain {
         block.hash = proof.to_string();
 
         self.chain.push(block.clone());
-        true
     }
 
     fn is_valid_proof(&self, block: &mut Block, block_hash: &str) -> bool {
@@ -76,18 +80,16 @@ impl Blockchain {
     }
 
     /// Adds a transaction to the chain
-    pub fn add_transaction(&mut self, transaction: String) {
-        println!(
-            "Added transaction \"{}\" to unconfirmed transactions",
-            transaction
-        );
+    pub fn add_transaction(&mut self, sender: &str, receiver: &str, amount: f32) {
+        let transaction = Transaction::new(sender.to_string(), receiver.to_string(), amount);
+        println!("{}", transaction);
         self.unconfirmed_transactions.push(transaction);
     }
 
     fn res_mine(&mut self) -> ErrResult<Block> {
         let unconfirmed_transactions = self.unconfirmed_transactions.clone();
         let res = unconfirmed_transactions
-            .get(1)
+            .get(0)
             .ok_or(EmptyVecErr)
             .and_then(|_| {
                 let last_block = self.last_block();
@@ -101,7 +103,9 @@ impl Blockchain {
                 let proof = self.proof_of_work(&mut new_block);
 
                 self.add_block(&mut new_block, &proof);
-                self.unconfirmed_transactions = vec!["".to_string()];
+                self.unconfirmed_transactions =
+                    vec![Transaction::new("".to_string(), "".to_string(), 0f32)];
+                self.unconfirmed_transactions.remove(0);
 
                 Ok(new_block).map_err(|_: Block| EmptyVecErr)
             });
