@@ -1,7 +1,7 @@
 ## Rust Blockchain
 [![crate][crate-image]][crate-link]
 [![Docs][docs-image]][docs-link]
-![Apache2/MIT licensed][license-image]
+![MIT licensed][license-image]
 ![Rust Version][rustc-image]
 
 Blockchain crate for the Rust programming language.
@@ -11,7 +11,7 @@ It's API is still very unstable and should not be taken for granted.
 ## Can you show me how to use this crate?
 
 Here's an example to get started
-```
+```rust
 use std::env;
 
 use rs_blockchain::rust_blockchain::blockchain::Blockchain;
@@ -49,6 +49,8 @@ fn main() {
 ## Can I contribute to this project?
 Of course, anyone can!
 
+
+[crate-image]: https://img.shields.io/crates/v/rs_blockchain.svg
 [crate-link]: https://crates.io/crates/rs_blockchain.svg
 [docs-image]: https://docs.rs/rs_blockchain/badge.svg
 [docs-link]: https://docs.rs/rs_blockchain/
