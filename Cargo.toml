@@ -1,6 +1,6 @@
 [package]
 name = "rs_blockchain"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Pavlos Efstathiou"]
 edition = "2018"
 license = "MIT"
@@ -10,7 +10,8 @@ homepage = "https://github.com/Pavlos-Efstathiou/Rust-Blockchain/"
 repository = "https://github.com/Pavlos-Efstathiou/Rust-Blockchain/" 
 keywords = ["blockchain", "crypto", "currency", "github", "open-source"]
 exclude = [
-    ".vscode/*"
+    ".vscode/",
+    ".github/"
 ]
 
 [dependencies]

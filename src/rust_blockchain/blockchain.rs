@@ -15,13 +15,9 @@ impl Blockchain {
     /// Returns a new instance of the Blockchain Struct
     pub fn new() -> Self {
         Self {
-            unconfirmed_transactions: vec![],
+            unconfirmed_transactions: Vec::new(),
             difficulty: 3,
-            chain: vec![Block::new(
-                0,
-                vec![Transaction::new("".to_string(), "".to_string(), 0f32)],
-                "".to_string(),
-            )],
+            chain: vec![Block::new(0, Vec::new(), "0000".to_string())],
         }
     }
 
@@ -90,7 +86,7 @@ impl Blockchain {
         let unconfirmed_transactions = self.unconfirmed_transactions.clone();
         let res = unconfirmed_transactions
             .get(0)
-            .ok_or(EmptyVecErr)
+            .ok_or_else(|| EmptyVecErr.into())
             .and_then(|_| {
                 let last_block = self.last_block();
 
@@ -103,11 +99,9 @@ impl Blockchain {
                 let proof = self.proof_of_work(&mut new_block);
 
                 self.add_block(&mut new_block, &proof);
-                self.unconfirmed_transactions =
-                    vec![Transaction::new("".to_string(), "".to_string(), 0f32)];
-                self.unconfirmed_transactions.remove(0);
+                self.unconfirmed_transactions = Vec::new();
 
-                Ok(new_block).map_err(|_: Block| EmptyVecErr)
+                Ok(new_block).map_err(|_: Block| EmptyVecErr.into())
             });
         res
     }
@@ -120,11 +114,11 @@ impl Blockchain {
                 val.index
             }
             Err(e) => {
-                eprintln!("Error: {}", e);
+                eprintln!("{}", e);
                 if env::consts::OS == "windows" {
-                    std::process::exit(0x100);
+                    std::process::exit(1);
                 } else {
-                    std::process::exit(0x0);
+                    std::process::exit(0);
                 };
             }
         };

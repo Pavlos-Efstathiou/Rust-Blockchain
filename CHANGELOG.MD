@@ -7,6 +7,13 @@ All noteworth changes to this project will be mentioned in this file.
 - Implementations of ```std::fmt::display``` for ```Block``` and ```Transaction```
 - Some minor changes
 
+## v0.2.1 Alma | 20/6/2021
+### Additions
+- ```EmptyVecErr``` now implements Error and ```ErrResult```'s Error type is a ```Box<dyn std::error:Error>```
+- Moved the code in ```mod.rs``` to ```lib.rs```
+- Added a GitHub Workflow
+- Minor changes
+
 ### Upcoming features
 - Wallets
 - Sending coins through a network
