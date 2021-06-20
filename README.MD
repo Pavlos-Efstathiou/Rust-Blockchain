@@ -15,13 +15,14 @@ Here's an example to get started
 use std::env;
 
 use rs_blockchain::rust_blockchain::blockchain::Blockchain;
-use rs_blockchain::rust_blockchain::*;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
     let mut test = Blockchain::new();
 
+    println!("{}", rs_blockchain::VERSION_INFO);
     test.init();
+
     if args.len() >= 2 {
         let mut collected_args: String = String::new();
 
@@ -29,7 +30,7 @@ fn main() {
             collected_args.push_str(arg);
         }
 
-        let amount: u32 = remove_non_digits(&collected_args);
+        let amount: u32 = rs_blockchain::remove_non_digits(&collected_args);
 
         for i in 1..=amount {
             test.add_transaction("Jane Doe", "John Doe", i as f32);
