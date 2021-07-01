@@ -7,48 +7,12 @@ use sha2::Digest;
 use serde::{Deserialize, Serialize};
 use serde_json::Result;
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct Transaction {
-    pub sender: String,
-    pub receiver: String,
-    pub amount: f32,
-}
-
-impl Transaction {
-    /// Creates a new transaction
-    pub fn new(sender: String, receiver: String, amount: f32) -> Self {
-        Self {
-            sender,
-            receiver,
-            amount,
-        }
-    }
-    fn get_json_result(&self) -> Result<String> {
-        let json_data = serde_json::to_string(&self)?;
-        Ok(json_data)
-    }
-
-    /// Return a Block struct's data in the JSON format
-    pub fn get_json(&self) -> String {
-        let result_json = self.get_json_result();
-        result_json.as_ref().unwrap().to_string()
-    }
-}
-impl std::fmt::Display for Transaction {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "{} sent {} coin(s) to {}",
-            self.sender, self.amount, self.receiver
-        )
-    }
-}
 /// Block struct.
-/// Used in a Blockchain with other blocks and the Blockchain class
+/// Used in a Blockchain with other blocks
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Block {
     pub index: u32,
-    pub transactions: Vec<Transaction>,
+    pub transactions: Vec<String>,
     pub timestamp: String,
     pub previous_hash: String,
     pub hash: String,
@@ -58,14 +22,14 @@ pub struct Block {
 #[allow(dead_code)]
 impl Block {
     /// Creates a new block
-    pub fn new(block_index: u32, transaction_vec: Vec<Transaction>, prev_hash: String) -> Self {
+    pub fn new(block_index: u32, transaction_vec: Vec<String>, prev_hash: String) -> Self {
         let local_date_time: String = Local::now().format("%d-%m-%Y %H:%M:%S").to_string();
         Self {
             index: block_index,
             transactions: transaction_vec,
             timestamp: local_date_time,
             previous_hash: prev_hash,
-            hash: String::from("0"),
+            hash: String::new(),
             nonce: 0u32,
         }
     }

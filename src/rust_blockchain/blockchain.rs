@@ -2,18 +2,21 @@ use crate::rust_blockchain::block::*;
 use crate::rust_blockchain::err::{EmptyVecErr, ErrResult};
 
 use std::env;
+use std::fs;
+use std::fs::File;
+use std::io::prelude::*;
 
 #[allow(dead_code)]
 pub struct Blockchain {
-    pub unconfirmed_transactions: Vec<Transaction>,
-    pub difficulty: i32,
+    pub unconfirmed_transactions: Vec<String>,
+    pub difficulty: u32,
     pub chain: Vec<Block>,
 }
 
 #[allow(dead_code)]
 impl Blockchain {
     /// Returns a new instance of the Blockchain Struct
-    pub fn new() -> Self {
+    fn new() -> Self {
         Self {
             unconfirmed_transactions: Vec::new(),
             difficulty: 3,
@@ -29,11 +32,17 @@ impl Blockchain {
     }
 
     /// Initializes a Blockchain by creating a genesis block
-    pub fn init(&mut self) {
-        let mut genesis_block = &mut self.chain[0];
+    pub fn init() -> Self {
+        let mut blck_chain = Blockchain::new();
+        let mut genesis_block = &mut blck_chain.chain[0];
         genesis_block.hash = genesis_block.compute_hash();
+
+        blck_chain
     }
 
+    pub fn set_difficulty(&mut self, diff: u32) {
+        self.difficulty = diff;
+    }
     /// Returns a clone of the last block in a chain
     pub fn last_block(&mut self) -> Block {
         let chain_length = self.chain.len();
@@ -61,11 +70,11 @@ impl Blockchain {
 
         if previous_hash != block.previous_hash {
             panic!("The previous hash of the last block isn't the same as the hash of the block with index {}!", block.index);
-        };
+        }
 
         if !(self.is_valid_proof(block, proof)) {
             panic!("{} is not valid proof", proof);
-        };
+        }
         block.hash = proof.to_string();
 
         self.chain.push(block.clone());
@@ -76,11 +85,11 @@ impl Blockchain {
     }
 
     /// Adds a transaction to the chain
-    pub fn add_transaction(&mut self, sender: &str, receiver: &str, amount: f32) {
-        let transaction = Transaction::new(sender.to_string(), receiver.to_string(), amount);
-        println!("{}", transaction);
-        self.unconfirmed_transactions.push(transaction);
-    }
+    // pub fn add_transaction(&mut self, sender: &str, receiver: &str, amount: f32) {
+    //     let transaction = Transaction::new(sender.to_string(), receiver.to_string(), amount);
+    //     println!("{}", transaction);
+    //     self.unconfirmed_transactions.push(transaction);
+    // }
 
     fn res_mine(&mut self) -> ErrResult<Block> {
         let unconfirmed_transactions = self.unconfirmed_transactions.clone();
@@ -123,6 +132,31 @@ impl Blockchain {
             }
         };
         mined_block
+    }
+
+    pub fn write_chain_to_file(&self) -> std::io::Result<()> {
+        const BLOCKS_DIR: &str = "Blocks";
+
+        match fs::read_dir(BLOCKS_DIR) {
+            Err(_) => {
+                fs::create_dir(BLOCKS_DIR)?;
+                env::set_current_dir(BLOCKS_DIR)?;
+            }
+            Ok(_) => {
+                fs::remove_dir_all(BLOCKS_DIR)?;
+                fs::create_dir(BLOCKS_DIR)?;
+                env::set_current_dir(BLOCKS_DIR)?;
+            }
+        }
+        for blck in self.chain.iter() {
+            let self_json = blck.get_json();
+            let file_name = format!("Block {}.json", blck.index);
+            let mut file = File::create(file_name)?;
+
+            file.write_all(self_json.as_bytes())?;
+        }
+        env::set_current_dir("..")?;
+        Ok(())
     }
 }
 

@@ -12,9 +12,6 @@ impl Error for EmptyVecErr {}
 
 impl fmt::Display for EmptyVecErr {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "\x1b[31m\x1b[1mError: No transactions have happened!\x1b[0m"
-        )
+        write!(f, "Error: No transactions have happened!")
     }
 }

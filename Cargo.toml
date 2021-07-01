@@ -1,6 +1,6 @@
 [package]
 name = "rs_blockchain"
-version = "0.2.1"
+version = "0.2.3"
 authors = ["Pavlos Efstathiou"]
 edition = "2018"
 license = "MIT"
