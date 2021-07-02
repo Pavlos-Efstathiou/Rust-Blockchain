@@ -33,22 +33,34 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         let amount = rs_blockchain::remove_non_digits(&collected_args);
 
-        match amount {
-            Ok(o) => {
-                for i in 1..=o {
-                    add_transaction!(new_blockchain, "Jane Doe" => "John Doe", i as f32);
-                    new_blockchain.mine();
-                }
+        if amount != 0 {
+            for i in 1..=amount {
+                add_transaction!(
+                    new_blockchain, "Jane Doe" => "John Doe", i as f32,
+                    new_blockchain, "John Doe" => "Jane Doe", i * 2
+                );
+                new_blockchain.mine();
             }
-            Err(_) => eprintln!("First argument does not contain a number"),
+        } else {
+            for i in 1..=25 {
+                add_transaction!(
+                    new_blockchain, "Jane Doe" => "John Doe", i as f32,
+                    new_blockchain, "John Doe" => "Jane Doe", i * 2,
+                );
+                new_blockchain.mine();
+            }
         }
     } else {
         for i in 1..=25 {
-            add_transaction!(new_blockchain, "Jane Doe" => "John Doe", i as f32);
+            add_transaction!(
+                new_blockchain, "Jane Doe" => "John Doe", i as f32,
+                new_blockchain, "John Doe" => "Jane Doe", i * 2,
+            );
             new_blockchain.mine();
         }
     };
 
+    new_blockchain.list_transactions();
     new_blockchain.write_chain_to_file()?;
     Ok(())
 }
@@ -59,8 +71,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 Of course, anyone can!
 
 
-## Dependency graph
-![Depenency Graph](images/graph.png)
+## Dependency Graph
+![Dependency Graph](images/graph.png)
 
 
 [crate-image]: https://img.shields.io/crates/v/rs_blockchain.svg

@@ -1,7 +1,7 @@
 use std::error::Error;
 use std::fmt;
 
-/// Type which returns a Result with a type of T and Error an type of EmptyVecErr
+/// Type which returns a Result with a type of T and an Error type of EmptyVecErr
 pub type ErrResult<T> = std::result::Result<T, Box<dyn Error>>;
 
 /// Error which shows up when no transactions have happened in a Blockchain

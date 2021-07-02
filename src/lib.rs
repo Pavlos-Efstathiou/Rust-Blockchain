@@ -24,23 +24,29 @@ impl fmt::Display for VersionInfo<'_> {
 pub const VERSION_INFO: VersionInfo = VersionInfo {
     version: 0.2,
     version_name: "Alma",
-    patch: 3,
+    patch: 5,
 };
 
-pub fn remove_non_digits(string: &str) -> Result<u32, std::num::ParseIntError> {
-    let re = regex::Regex::new(r"(\D)+").unwrap();
-    let applied_regex = re.replace_all(string, "");
-
-    applied_regex.parse::<u32>()
+/// Removes all characters that are not digits from an &str
+pub fn remove_non_digits(arg: &str) -> u32 {
+    arg.chars()
+        .filter(|c| c.is_digit(10))
+        .collect::<String>()
+        .parse::<u32>()
+        .unwrap_or(0)
 }
 
+/// Adds a transaction to the provided Blockchain
 #[macro_export]
 macro_rules! add_transaction {
-    ($block:expr , $sender:expr => $receiver:expr , $amount:expr $(,)?) => {{
-        let string_json = format!(
-            "{{\n\t\"sender\": {:?},\n\t\"receiver\": {:?},\n\t\"amount\": {:?},\n}}",
-            $sender, $receiver, $amount
-        );
-        $block.unconfirmed_transactions.push(string_json);
+    () => {};
+    ($($blockchain:expr , $sender:expr => $receiver:expr , $amount:expr),+ $(,)?) => {{
+        $(
+            let string_json = format!(
+                r#"{{ "sender": {:?}, "receiver": {:?}, "amount": {:?} }}"#,
+                $sender, $receiver, $amount
+            );
+            $blockchain.unconfirmed_transactions.push(string_json);
+        )+
     }};
 }

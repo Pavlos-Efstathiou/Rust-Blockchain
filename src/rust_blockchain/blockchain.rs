@@ -26,12 +26,10 @@ impl Blockchain {
 
     fn starts_with_zeros(&self, hash: &str) -> bool {
         let zeros: String = "0".repeat(self.difficulty as usize);
-        let formated_regex = format!(r"^({})", &zeros[..]);
-        let start_zeros = regex::Regex::new(&formated_regex).unwrap();
-        start_zeros.is_match(&*(hash))
+        hash.starts_with(&zeros)
     }
 
-    /// Initializes a Blockchain by creating a genesis block
+    /// Creates a new Blockchain struct and instantiates a genesis block
     pub fn init() -> Self {
         let mut blck_chain = Blockchain::new();
         let mut genesis_block = &mut blck_chain.chain[0];
@@ -40,6 +38,7 @@ impl Blockchain {
         blck_chain
     }
 
+    /// Sets the difficulty to the provided value
     pub fn set_difficulty(&mut self, diff: u32) {
         self.difficulty = diff;
     }
@@ -84,13 +83,6 @@ impl Blockchain {
         self.starts_with_zeros(&block_hash) && block_hash == block.compute_hash()
     }
 
-    /// Adds a transaction to the chain
-    // pub fn add_transaction(&mut self, sender: &str, receiver: &str, amount: f32) {
-    //     let transaction = Transaction::new(sender.to_string(), receiver.to_string(), amount);
-    //     println!("{}", transaction);
-    //     self.unconfirmed_transactions.push(transaction);
-    // }
-
     fn res_mine(&mut self) -> ErrResult<Block> {
         let unconfirmed_transactions = self.unconfirmed_transactions.clone();
         let res = unconfirmed_transactions
@@ -134,6 +126,7 @@ impl Blockchain {
         mined_block
     }
 
+    /// Writes all Blocks in a Blockchain into a separate file
     pub fn write_chain_to_file(&self) -> std::io::Result<()> {
         const BLOCKS_DIR: &str = "Blocks";
 
@@ -153,15 +146,24 @@ impl Blockchain {
             let file_name = format!("Block {}.json", blck.index);
             let mut file = File::create(file_name)?;
 
-            file.write_all(self_json.as_bytes())?;
+            file.write_all(&self_json.as_bytes())?;
         }
         env::set_current_dir("..")?;
         Ok(())
+    }
+
+    /// Lists all transactions in a Blockchain
+    pub fn list_transactions(&self) {
+        for block in self.chain.iter() {
+            for transaction in block.transactions.to_owned() {
+                println!("{}", transaction);
+            }
+        }
     }
 }
 
 impl Default for Blockchain {
     fn default() -> Self {
-        Self::new()
+        Self::init()
     }
 }

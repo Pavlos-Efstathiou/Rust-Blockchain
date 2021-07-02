@@ -24,6 +24,13 @@ All noteworth changes to this project will be mentioned in this file.
 - Transactions have been replaced with JSON in Strings
 - Some minor changes
 
+## v0.2.5 Alma | 2/7/2021
+### Additions
+- The ```regex``` crate isn't a dependency anymore
+- Documented all public functions
+- Added the ```Blockchain::list_transactions``` function
+- Some minor changes
+
 ### Upcoming features
 - Wallets
 - Sending coins through a network
