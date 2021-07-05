@@ -59,7 +59,6 @@ impl Blockchain {
             string_start = self.starts_with_zeros(&computed_hash);
         }
         println!("Hash: {}", computed_hash);
-
         computed_hash
     }
 
@@ -141,12 +140,13 @@ impl Blockchain {
                 env::set_current_dir(BLOCKS_DIR)?;
             }
         }
+
         for blck in self.chain.iter() {
             let self_json = blck.get_json();
             let file_name = format!("Block {}.json", blck.index);
             let mut file = File::create(file_name)?;
 
-            file.write_all(&self_json.as_bytes())?;
+            file.write_all(&(self_json.as_bytes()))?;
         }
         env::set_current_dir("..")?;
         Ok(())

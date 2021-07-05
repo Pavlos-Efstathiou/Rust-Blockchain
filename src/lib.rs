@@ -21,10 +21,10 @@ impl fmt::Display for VersionInfo<'_> {
 }
 
 #[allow(dead_code)]
-pub const VERSION_INFO: VersionInfo = VersionInfo {
+pub static VERSION_INFO: VersionInfo = VersionInfo {
     version: 0.2,
     version_name: "Alma",
-    patch: 5,
+    patch: 6,
 };
 
 /// Removes all characters that are not digits from an &str
@@ -42,10 +42,15 @@ macro_rules! add_transaction {
     () => {};
     ($($blockchain:expr , $sender:expr => $receiver:expr , $amount:expr),+ $(,)?) => {{
         $(
-            let string_json = format!(
-                r#"{{ "sender": {:?}, "receiver": {:?}, "amount": {:?} }}"#,
-                $sender, $receiver, $amount
-            );
+            let string_json = serde_json::to_string_pretty(
+                &serde_json::json!(
+                    {
+                        "sender": $sender,
+                        "receiver": $receiver,
+                        "amount": $amount,
+                    }
+                )
+            ).unwrap_or_else(|_| String::from(""));
             $blockchain.unconfirmed_transactions.push(string_json);
         )+
     }};

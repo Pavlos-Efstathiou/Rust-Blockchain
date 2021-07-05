@@ -1,6 +1,6 @@
 use std::fmt;
 
-use chrono::prelude::*;
+use std::time::{SystemTime, UNIX_EPOCH};
 
 use sha2::Digest;
 
@@ -13,7 +13,7 @@ use serde_json::Result;
 pub struct Block {
     pub index: u32,
     pub transactions: Vec<String>,
-    pub timestamp: String,
+    pub timestamp: u64,
     pub previous_hash: String,
     pub hash: String,
     pub nonce: u32,
@@ -23,11 +23,14 @@ pub struct Block {
 impl Block {
     /// Creates a new block
     pub fn new(block_index: u32, transaction_vec: Vec<String>, prev_hash: String) -> Self {
-        let local_date_time: String = Local::now().format("%d-%m-%Y %H:%M:%S").to_string();
+        let start = SystemTime::now();
+        let since_the_epoch = start
+            .duration_since(UNIX_EPOCH)
+            .expect("Time went backwards");
         Self {
             index: block_index,
             transactions: transaction_vec,
-            timestamp: local_date_time,
+            timestamp: since_the_epoch.as_secs(),
             previous_hash: prev_hash,
             hash: String::new(),
             nonce: 0u32,
@@ -35,7 +38,7 @@ impl Block {
     }
 
     fn get_json_result(&self) -> Result<String> {
-        let json_data = serde_json::to_string(&self)?;
+        let json_data = serde_json::to_string_pretty(&self)?;
         Ok(json_data)
     }
 
