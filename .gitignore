@@ -1,4 +1,4 @@
 target/
-target/*
-Blocks
+Blocks/
 test.rs
+example/target

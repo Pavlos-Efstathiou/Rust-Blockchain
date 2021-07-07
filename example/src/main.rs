@@ -2,17 +2,18 @@ use std::env;
 
 use rs_blockchain::add_transaction;
 use rs_blockchain::rust_blockchain::blockchain::Blockchain;
+use rs_blockchain::Unwrap;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = env::args().collect();
     let mut new_blockchain = Blockchain::init();
     let mut collected_args: String = String::new();
 
-    for arg in args[..].iter() {
+    for arg in args[0..].iter() {
         collected_args.push_str(arg);
     }
 
-    let amount = rs_blockchain::remove_non_digits(&collected_args);
+    let amount = rs_blockchain::remove_non_digits(&collected_args).arg_unwrap();
 
     new_blockchain.set_difficulty(4);
     println!("{}", rs_blockchain::VERSION_INFO);

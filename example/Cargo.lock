@@ -19,9 +19,9 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
 name = "cpufeatures"
-version = "0.1.4"
+version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ed00c67cb5d0a7d64a44f6ad2668db7e7530311dd53ea79bcd4fb022c64911c8"
+checksum = "66c99696f6c9dd7f35d486b9d04d7e6e202aa3e8c40d553f2fdf5e7e0c6a71ef"
 dependencies = [
  "libc",
 ]
@@ -33,6 +33,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d3dd60d1080a57a05ab032377049e0591415d2b31afd7028356dbf3cc6dcb066"
 dependencies = [
  "generic-array",
+]
+
+[[package]]
+name = "example"
+version = "0.1.0"
+dependencies = [
+ "rs_blockchain",
+ "serde_json",
 ]
 
 [[package]]
@@ -83,7 +91,9 @@ dependencies = [
 
 [[package]]
 name = "rs_blockchain"
-version = "0.2.7"
+version = "0.2.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b64e6b3495bfeedb599a7dfad928b51e5ecfe0c923ca2067d76eeebbc113825f"
 dependencies = [
  "serde",
  "serde_json",

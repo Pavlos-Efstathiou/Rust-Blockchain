@@ -31,7 +31,7 @@
                 "args": [
                     "build",
                     "--bin=rs_blockchain",
-                    "--package=rs_blockchain"
+                    "--package=rs_blockchain",
                 ],
                 "filter": {
                     "name": "rs_blockchain",

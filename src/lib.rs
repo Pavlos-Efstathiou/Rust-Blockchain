@@ -1,6 +1,17 @@
 pub mod rust_blockchain;
-
 use std::fmt;
+
+pub type ArgValue = Option<u32>;
+
+pub trait Unwrap {
+    fn arg_unwrap(&self) -> u32;
+}
+
+impl Unwrap for ArgValue {
+    fn arg_unwrap(&self) -> u32 {
+        self.unwrap_or(0)
+    }
+}
 
 #[derive(Debug, Copy, Clone)]
 pub struct VersionInfo<'a> {
@@ -24,16 +35,22 @@ impl fmt::Display for VersionInfo<'_> {
 pub static VERSION_INFO: VersionInfo = VersionInfo {
     version: 0.2,
     version_name: "Alma",
-    patch: 6,
+    patch: 7,
 };
 
 /// Removes all characters that are not digits from an &str
-pub fn remove_non_digits(arg: &str) -> u32 {
-    arg.chars()
+pub fn remove_non_digits(arg: &str) -> ArgValue {
+    let num = arg
+        .chars()
         .filter(|c| c.is_digit(10))
         .collect::<String>()
         .parse::<u32>()
-        .unwrap_or(0)
+        .unwrap_or(0);
+
+    match num {
+        0 => None,
+        _ => Some(num),
+    }
 }
 
 /// Adds a transaction to the provided Blockchain

@@ -39,10 +39,12 @@ All noteworth changes to this project will be mentioned in this file.
 - JSON is pretty printed now
 - Minor changes
 
+## v0.2.7 Alma | 7/7/2021
+### Changes
+- Added ```ArgValue```; a type alias of ```Option<u32>``` which implements the ```arg_unwrap``` method
+- Made ```rs_blockchain::remove_non_digits``` return an ```ArgValue<u32>```
 
 ### Upcoming features
-- Wallets
-- Sending coins through a network
 - Better Documentation
 - Multithreading
 - Unit Tests
